@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaints · Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin-nav.css">
+    <link rel="stylesheet" href="../css/complaints.css">
+
+</head>
+<body>
+    <!-- Admin complaints panel: manage resident issues, status updates, and actions -->
+    <!--================ Blue Navigation Bar =====================================-->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <div class="nav-logo">
+                <img src="../images/image.png" alt="Logo">
+                <span>Urban<span>Society</span></span>
+            </div>
+        </div>
+
+        <div class="nav-center">
+            <ul class="nav-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="members.html"><i class="fas fa-users"></i> Members</a></li>
+                <li><a href="complaints.html" class="active"><i class="fas fa-exclamation-triangle"></i> Complaints</a></li>
+                <li><a href="notices.html"><i class="fas fa-bullhorn"></i> Notices</a></li>
+                <li><a href="events.html"><i class="fas fa-calendar"></i> Events</a></li>
+                <li><a href="bills.html"><i class="fas fa-file-invoice"></i> Bills</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+            <div class="notification-badge" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationCount">0</span>
+                <div class="notification-panel" id="notificationPanel">
+                    <div class="notification-header">
+                        <span>Notifications</span>
+                        <i class="fas fa-times" onclick="event.stopPropagation(); closeNotifications();" style="cursor:pointer;"></i>
+                    </div>
+                    <div id="notificationsList"></div>
+                    <div class="notification-footer">
+                        <a href="#" onclick="document.location.href='complaints.html'; return false;">View all</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Admin</span>
+                        <span class="user-role" id="userRole">Administrator</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                    <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="help.html"><i class="fas fa-question-circle"></i> Help</a>
+                    <a href="#" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!--==================== Main Content =============================-->
+    <main class="main-content">
+        <h1 class="page-title">Complaints Management</h1>
+
+        <div class="complaints-container">
+            <!-- Stats Cards -->
+            <div class="stats-cards">
+                <div class="stat-card small">
+                    <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+                    <div class="stat-details">
+                        <h3>Pending</h3>
+                        <p class="stat-number" id="pendingCount">0</p>
+                    </div>
+                </div>
+                <div class="stat-card small">
+                    <div class="stat-icon blue"><i class="fas fa-spinner"></i></div>
+                    <div class="stat-details">
+                        <h3>In Progress</h3>
+                        <p class="stat-number" id="progressCount">0</p>
+                    </div>
+                </div>
+                <div class="stat-card small">
+                    <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-details">
+                        <h3>Resolved</h3>
+                        <p class="stat-number" id="resolvedCount">0</p>
+                    </div>
+                </div>
+                <div class="stat-card small">
+                    <div class="stat-icon purple"><i class="fas fa-exclamation"></i></div>
+                    <div class="stat-details">
+                        <h3>High Priority</h3>
+                        <p class="stat-number" id="highPriorityCount">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!--============================= Filters ==============================-->
+            <div class="filter-section">
+                <button class="filter-btn active" onclick="filterComplaints('all', this)">All</button>
+                <button class="filter-btn" onclick="filterComplaints('pending', this)">Pending</button>
+                <button class="filter-btn" onclick="filterComplaints('in-progress', this)">In Progress</button>
+                <button class="filter-btn" onclick="filterComplaints('resolved', this)">Resolved</button>
+                <button class="filter-btn" onclick="filterComplaints('rejected', this)">Rejected</button>
+                <select class="filter-btn" onchange="filterByPriority(this.value)">
+                    <option value="all">All Priority</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+                <div class="search-box" style="margin-left: auto;">
+                    <input type="text" id="searchComplaint" placeholder="Search complaints..." onkeyup="searchComplaints()">
+                    <button class="btn-primary" onclick="searchComplaints()"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+
+            <!--======================= Complaints List ==============================-->
+            <div id="complaintsList">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!--================== View Details Modal =========================-->
+    <div class="modal" id="viewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Complaint Details</h2>
+                <span class="close-btn" onclick="closeModal('viewModal')">&times;</span>
+            </div>
+            <div id="complaintDetails" style="margin-bottom: 20px;">
+                <!-- Details will be loaded here -->
+            </div>
+            <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="btn-primary" onclick="closeModal('viewModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!--================= Assign Modal ===========================-->
+    <div class="modal" id="assignModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Assign Complaint</h2>
+                <span class="close-btn" onclick="closeModal('assignModal')">&times;</span>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <p><strong>Complaint:</strong> <span id="assignComplaintId"></span></p>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Select Staff:</label>
+                    <select id="staffSelect" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                        <option value="">Choose Staff</option>
+                        <option value="Raj Kumar">Raj Kumar - Technician</option>
+                        <option value="Sunil Sharma">Sunil Sharma - Electrician</option>
+                        <option value="Amit Patel">Amit Patel - Plumber</option>
+                        <option value="Vikram Singh">Vikram Singh - Security</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Expected Resolution Date:</label>
+                    <input type="date" id="expectedDate" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+            </div>
+            <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="btn-primary" onclick="confirmAssignment()">Assign</button>
+                <button class="filter-btn" onclick="closeModal('assignModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/complaints.js"></script>
+</body>
+</html>

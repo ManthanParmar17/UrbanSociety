@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
+
+:root {
+    --primary: #0a0f1a;
+    --secondary: #3dd6a6;
+    --accent: #20a4f3;
+    --card: #0d1728;
+    --card-strong: #111b2e;
+    --text: #eaf0ff;
+    --muted: #b9c8e3;
+    --border: rgba(255,255,255,0.12);
+    --shadow: 0 16px 32px rgba(0,0,0,0.32);
+}
+
+body {
+    background: #0b1221;
+    color: var(--text);
+    font-family: 'Manrope','Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+}
+
+.card {
+    background: linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.14);
+    color: var(--text);
+    box-shadow: var(--shadow);
+    border-radius: 18px;
+    padding: 22px 24px;
+}
+
+.notice-title {
+    color: #fdfefe;
+    font-size: 1.22rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+.notice-date {
+    color: #cbd5e1;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.notice-body {
+    color: #e9edf5;
+    font-size: 1.06rem;
+    margin-top: 10px;
+}
+
+.notice-actions {
+    margin-top: 12px;
+}
+
+/* Page heading and nav tweaks for readability */
+.main-content h1,
+.page-title {
+    color: #f9fbff;
+    font-size: 1.7rem;
+    font-weight: 900;
+}
+
+.nav-menu a {
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.nav-logo span {
+    font-size: 1.3rem;
+    font-weight: 900;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .nav-center { display: none; }
+    .main-content { padding: 22px 16px; }
+    .card { padding: 18px 16px; }
+}

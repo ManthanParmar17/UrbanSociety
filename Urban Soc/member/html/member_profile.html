@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile · Member</title>
+    <link rel="stylesheet" href="/admin/css/admin-nav.css">
+    <link rel="stylesheet" href="/admin/css/dashboard.css">
+    <style>
+        .profile-page { max-width: 720px; margin: 30px auto; background: #0b1321; color: #eaf0ff; padding: 24px; border-radius: 14px; box-shadow: 0 16px 32px rgba(0,0,0,0.35); }
+        .profile-page h1 { margin-bottom: 12px; }
+        .profile-form label { display:block; margin: 12px 0 6px; font-weight: 600; }
+        .profile-form input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: #0f1a2b; color: #eaf0ff; }
+        .profile-actions { margin-top: 18px; display:flex; gap:10px; }
+        .btn { padding: 12px 18px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; }
+        .btn-primary { background: linear-gradient(90deg,#3dd6a6,#1e90ff); color:#041021; }
+        .btn-secondary { background: rgba(255,255,255,0.12); color:#eaf0ff; }
+        .avatar-preview { margin-top:12px; width:96px; height:96px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,0.2); display:none; }
+    </style>
+</head>
+<body>
+<!-- ====================== COMMENT ===================== -->
+<!-- member_profile.html — member profile view/edit -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+            <div class="nav-logo">
+                <img src="/admin/images/image.png" alt="Logo">
+                <span>Urban<span>Society</span></span>
+            </div>
+        </div>
+        <div class="nav-center">
+            <ul class="nav-menu">
+                <li><a href="member_dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="member_notices.html"><i class="fas fa-bullhorn"></i> Notices</a></li>
+                <li><a href="member_events.html"><i class="fas fa-calendar"></i> Events</a></li>
+                <li><a href="member_complaints.html"><i class="fas fa-exclamation-triangle"></i> Complaints</a></li>
+                <li><a href="member_bills.html"><i class="fas fa-file-invoice"></i> Bills</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="dropdown">
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <img class="user-avatar" />
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Member</span>
+                        <span class="user-role">Resident</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                    <a href="member_profile.html"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="#" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="profile-page">
+            <h1>My Profile</h1>
+            <p>Update your details and profile picture.</p>
+            <form id="memberProfileForm" class="profile-form">
+                <label>Name</label>
+                <input type="text" id="profileName" required>
+                <label>Email</label>
+                <input type="email" id="profileEmail" required>
+                <label>Flat</label>
+                <input type="text" id="profileFlat" required>
+                <label>Phone</label>
+                <input type="tel" id="profilePhone" placeholder="Optional">
+                <label>Profile Picture</label>
+                <input type="file" id="profilePhoto" accept="image/*">
+                <img id="avatarPreview" class="avatar-preview" alt="Preview">
+                <div class="profile-actions">
+                    <button type="submit" class="btn btn-primary">Save Profile</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetMemberProfile()">Reset</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/member_profile.js"></script>
+</body>
+</html>

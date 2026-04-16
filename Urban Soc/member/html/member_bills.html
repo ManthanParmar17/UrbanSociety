@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bills Â· UrbanSociety</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/admin/css/admin-nav.css">
+    <link rel="stylesheet" href="/admin/css/dashboard.css">
+    <link rel="stylesheet" href="../css/member_dashboard.css">
+    <link rel="stylesheet" href="../css/member_bills.css">
+    <style>
+       
+    </style>
+</head>
+
+<body>
+<!-- ====================== COMMENT ===================== -->
+<!-- member_bills.html — member bills list & pay modal -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <button class="back-btn" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <div class="nav-logo">
+                <img src="/admin/images/image.png" alt="Logo">
+                <span>Urban<span>Society</span></span>
+            </div>
+        </div>
+
+        <div class="nav-center">
+            <ul class="nav-menu">
+                <li><a href="member_dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="member_notices.html"><i class="fas fa-bullhorn"></i> Notices</a></li>
+                <li><a href="member_events.html"><i class="fas fa-calendar"></i> Events</a></li>
+                <li><a href="member_complaints.html"><i class="fas fa-exclamation-triangle"></i> Complaints</a></li>
+                <li><a class="active" href="member_bills.html"><i class="fas fa-file-invoice"></i> Bills</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+            <div class="dropdown">
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="user-info">
+                        <span id="userName">Member</span>
+                        <span class="user-role">Resident</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                    <a href="member_profile.html"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="#" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <h1 class="page-title">My Bills</h1>
+        <div class="action-bar">
+            <button class="btn btn-secondary" id="refreshBills"><i class="fas fa-rotate-right"></i> Refresh</button>
+        </div>
+        <div id="billsContainer" class="cards"></div>
+    </div>
+
+    <!-- Pay modal -->
+    <div class="pay-modal" id="payModal" style="display:none;">
+        <div class="pay-modal__content">
+            <div class="pay-modal__header">
+                <h3>Pay Bill</h3>
+                <span class="close-btn" onclick="closePayModal()">&times;</span>
+            </div>
+            <div class="sub">Complete your payment securely</div>
+            <div class="row"><span>Bill:</span> <span id="payBillTitle"></span></div>
+            <div class="row"><span>Amount:</span> <span>&#8377; <span id="payBillAmount"></span></span></div>
+            <label>Payment Method</label>
+            <select id="payMethod">
+                <option value="upi">UPI</option>
+                <option value="card">Card</option>
+                <option value="cash">Cash</option>
+                <option value="netbanking">Net Banking</option>
+            </select>
+            <div class="pay-modal__actions">
+                <button class="btn btn-primary" onclick="confirmPay()">Pay</button>
+                <button class="btn btn-secondary" onclick="closePayModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer">@LeoVisionaries</footer>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/member_bills.js"></script>
+</body>
+
+</html>

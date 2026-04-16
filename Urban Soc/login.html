@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanSociety · unified login</title>
+    <!-- Font Awesome 6 (free) for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/admin/css/login.css">
+
+
+</head>
+<body>
+    <!-- ====================== COMMENT ===================== -->
+    <!-- login.html — unified admin/member sign-in screen -->
+    <div class="login-container">
+        <!-- brand with logo image -->
+        <div class="brand">
+            <h1>Urban<span>Society</span></h1>
+            <p></p>
+        </div>
+
+        <!-- tab switcher (admin / member) -->
+        <div class="tab-switch">
+            <button class="tab-btn active" id="tabAdmin"><i class="fas fa-user-shield"></i> Admin</button>
+            <button class="tab-btn" id="tabMember"><i class="fas fa-user"></i> Member</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" class="login-form">
+            <div class="input-group">
+                <label><i class="far fa-envelope" style="margin-right:6px;"></i> Email / username</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="admin@urbansociety.com" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-lock" style="margin-right:6px;"></i> Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <!-- ADMIN extra field -->
+            <div class="input-group dynamic-field" id="adminExtraField">
+                <label><i class="fas fa-id-badge"></i> Admin code (optional)</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-key"></i>
+                    <input type="text" id="adminCode" placeholder="admin#2025">
+                </div>
+            </div>
+
+            <!-- MEMBER extra field -->
+            <div class="input-group dynamic-field hidden-field" id="memberExtraField">
+                <label><i class="fas fa-door-open"></i> Flat / member ID</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-hashtag"></i>
+                    <input type="text" id="flatId" placeholder="e.g., A-101">
+                </div>
+            </div>
+
+            <div class="row-options">
+                <label class="remember">
+                    <input type="checkbox" checked> <span>Keep me logged in</span>
+                </label>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                <i class="fas fa-arrow-right-to-bracket"></i> <span id="btnText">Login as Admin</span>
+            </button>
+
+            <div class="divider">
+                <span class="divider-line"></span>
+                <span><i class="fas fa-shield-alt"></i> secure access</span>
+                <span class="divider-line"></span>
+            </div>
+
+            <div class="demo-hint" id="roleHint">
+                <i class="fas fa-shield"></i> You are logging in as <strong>Administrator</strong> (full access)
+            </div>
+        </form>
+
+        <p style="text-align:center; margin-top: 1.2rem; color:#3e6682; font-size:0.85rem;">
+            <i class="fas fa-phone-alt"></i> support@urbansociety · demo any credentials
+        </p>
+    </div>
+    <script src="/admin/js/login.js"></script>
+</body>
+</html>    

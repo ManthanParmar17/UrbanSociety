@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members · UrbanSociety</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin-nav.css">
+    <link rel="stylesheet" href="../css/members.css">
+</head>
+
+<body>
+    <!-- Admin members directory: view/search residents, manage profiles and roles -->
+    <!--=================== Blue Navigation Bar =======================-->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <div class="nav-logo">
+                <img src="../images/image.png" alt="Logo">
+                <span>Urban<span>Society</span></span>
+            </div>
+        </div>
+
+        <div class="nav-center">
+            <ul class="nav-menu">
+                <li><a href="dashboard.html"><i class="fas fa-dashboard"></i> Dashboard</a></li>
+                <li><a href="members.html" class="active"><i class="fas fa-users"></i> Members</a></li>
+                <li><a href="complaints.html"><i class="fas fa-exclamation-triangle"></i> Complaints</a></li>
+                <li><a href="notices.html"><i class="fas fa-bullhorn"></i> Notices</a></li>
+                <li><a href="events.html"><i class="fas fa-calendar"></i> Events</a></li>
+                <li><a href="bills.html"><i class="fas fa-file-invoice"></i> Bills</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+            <div class="notification-badge" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationCount">0</span>
+                <div class="notification-panel" id="notificationPanel">
+                    <div class="notification-header">
+                        <span>Notifications</span>
+                        <i class="fas fa-times" onclick="closeNotifications()" style="cursor: pointer;"></i>
+                    </div>
+                    <div id="notificationsList"></div>
+                    <div class="notification-footer">
+                        <a href="#" onclick="location.href='complaints.html'; return false;">View All</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Admin</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                    <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="help.html"><i class="fas fa-question-circle"></i> Help</a>
+                    <a href="#" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!--========================== Main Content ======================-->
+    <main class="main-content">
+        <h1 class="page-title">Members Management</h1>
+
+        <!--=========================== Add Member Form ======================-->
+        <div class="form-container">
+            <div class="form-header">
+                <h2><i class="fas fa-user-plus"></i> Add New Member</h2>
+            </div>
+            <form id="memberForm" class="member-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberName">Full Name</label>
+                        <input type="text" id="memberName" placeholder="Enter full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberEmail">Email Address</label>
+                        <input type="email" id="memberEmail" placeholder="Enter email address" required>
+                    </div>
+                </div>
+                <div class="form-row" style="grid-template-columns: 1fr auto;">
+                    <div class="form-group">
+                        <label for="memberFlat">Flat Number</label>
+                        <input type="text" id="memberFlat" placeholder="e.g., A-101" required>
+                    </div>
+                    <div class="form-group" style="align-self: end; display:flex; justify-content:flex-end;">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-plus"></i> Add Member
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--========================== Members Table ============================-->
+        <div class="table-container">
+            <div class="table-header">
+                <h2><i class="fas fa-users"></i> All Members</h2>
+                <div class="table-actions">
+                    <input type="text" id="searchInput" placeholder="Search members..." class="search-input">
+                    <button onclick="loadMembers()" class="btn-secondary">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Flat</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="membersTable">
+                        <!-- Members will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!--======================= Toast Notifications =================================-->
+    <div id="toastContainer"></div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/members.js"></script>
+</body>
+
+</html>

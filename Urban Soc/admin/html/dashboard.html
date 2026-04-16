@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard · UrbanSociety</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin-nav.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+    <!-- Admin dashboard landing: shows KPIs, recent activity, charts for society overview -->
+    <!--===================== Blue Navigation Bar =======================-->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <div class="nav-logo">
+                <img src="../images/image.png" alt="Logo">
+                <span>Urban<span>Society</span></span>
+            </div>
+        </div>
+
+        <div class="nav-center">
+            <ul class="nav-menu">
+                <li><a href="dashboard.html" class="active"><i class="fas fa-dashboard"></i> Dashboard</a></li>
+                <li><a href="members.html"><i class="fas fa-users"></i> Members</a></li>
+                <li><a href="complaints.html"><i class="fas fa-exclamation-triangle"></i> Complaints</a></li>
+                <li><a href="notices.html"><i class="fas fa-bullhorn"></i> Notices</a></li>
+                <li><a href="events.html"><i class="fas fa-calendar"></i> Events</a></li>
+                <li><a href="bills.html"><i class="fas fa-file-invoice"></i> Bills</a></li>
+                <!-- <li><a href="settings.html"><i class="fas fa-gear"></i> Settings</a></li> -->
+            </ul>
+        </div>
+
+        <div class="nav-right">
+            <div class="notification-badge" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationCount">3</span>
+                <div class="notification-panel" id="notificationPanel">
+                    <div class="notification-header">
+                        <span>Notifications</span>
+                        <i class="fas fa-times" onclick="closeNotifications()" style="cursor: pointer;"></i>
+                    </div>
+                    <div id="notificationsList"></div>
+                    <div class="notification-footer">
+                        <a href="#" onclick="location.href='complaints.html'; return false;">View All</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Admin</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                    <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="help.html"><i class="fas fa-question-circle"></i> Help</a>
+                    <a href="#" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!--============================ Main Content ===========================-->
+    <main class="main-content">
+        <h1 class="page-title">Dashboard Overview</h1>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Total Members</h3>
+                    <p class="stat-number" id="totalMembers">0</p>
+                    <small>↑ 12 this month</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Pending Bills</h3>
+                    <p class="stat-number" id="pendingBills">0</p>
+                    <small>₹ 0.00 pending</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Open Complaints</h3>
+                    <p class="stat-number" id="openComplaints">8</p>
+                    <small>4 high priority</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Events Today</h3>
+                    <p class="stat-number" id="todayEvents">2</p>
+                    <small>Next at 6 PM</small>
+                </div>
+            </div>
+        </div>
+
+        <!--==================== Content Grid ===============================-->
+        <div class="content-grid">
+            <!--================ Recent Complaints ===========================-->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Recent Complaints</h2>
+                    <a href="complaints.html" class="view-all">View All →</a>
+                </div>
+                <div class="card-body">
+                    <table class="recent-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Member</th>
+                                <th>Issue</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="complaintsTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--================== Upcoming Events =========================-->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Upcoming Events</h2>
+                    <a href="events.html" class="view-all">View All →</a>
+                </div>
+                <div class="card-body">
+                    <div class="event-list" id="eventList"></div>
+                </div>
+            </div>
+
+            <!--============================ New Members =============================-->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-plus"></i> New Members</h2>
+                    <a href="members.html" class="view-all">View All →</a>
+                </div>
+                <div class="card-body">
+                    <div class="member-list" id="newMembersList"></div>
+                </div>
+            </div>
+
+            <!--========================= Quick Actions =============================-->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                </div>
+                <div class="card-body">
+                    <div class="action-buttons">
+                        <button onclick="location.href='notices.html'" class="action-btn">
+                            <i class="fas fa-plus-circle"></i> Add Notice
+                        </button>
+                        <button onclick="location.href='members.html?add=true'" class="action-btn">
+                            <i class="fas fa-user-plus"></i> Add Member
+                        </button>
+                        <button onclick="location.href='bills.html?generate=true'" class="action-btn">
+                            <i class="fas fa-file-invoice"></i> Generate Bills
+                        </button>
+                        <button onclick="location.href='events.html?add=true'" class="action-btn">
+                            <i class="fas fa-calendar-plus"></i> Schedule Event
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+
+</html>

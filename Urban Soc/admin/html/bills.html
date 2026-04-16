@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bills Management · UrbanSociety</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin-nav.css">
+    <link rel="stylesheet" href="../css/bills.css">
+</head>
+<body>
+    <!-- Admin bills workspace: generate member bills, track stats, filter and export -->
+    <!--======================= Blue Navigation Bar =========================-->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <div class="nav-logo">
+                <img src="../images/image.png" alt="Logo">
+                <span>Urban<span>Society</span></span>
+            </div>
+        </div>
+
+        <div class="nav-center">
+            <ul class="nav-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="members.html"><i class="fas fa-users"></i> Members</a></li>
+                <li><a href="complaints.html"><i class="fas fa-exclamation-triangle"></i> Complaints</a></li>
+                <li><a href="notices.html"><i class="fas fa-bullhorn"></i> Notices</a></li>
+                <li><a href="events.html"><i class="fas fa-calendar"></i> Events</a></li>
+                <li><a href="bills.html" class="active"><i class="fas fa-file-invoice"></i> Bills</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+            <div class="notification-badge" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationCount">0</span>
+                <div class="notification-panel" id="notificationPanel">
+                    <div class="notification-header">
+                        <span>Notifications</span>
+                        <i class="fas fa-times" onclick="event.stopPropagation(); closeNotifications();" style="cursor:pointer;"></i>
+                    </div>
+                    <div id="notificationsList"></div>
+                    <div class="notification-footer">
+                        <a href="#" onclick="document.location.href='complaints.html'; return false;">View all</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Admin</span>
+                        <span class="user-role" id="userRole">Administrator</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                    <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="help.html"><i class="fas fa-question-circle"></i> Help</a>
+                    <a href="#" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!--======================== Main Content =============================== -->
+    <main class="main-content">
+        <div class="page-title">
+            <h1>Bills Management</h1>
+            <button class="btn-primary" onclick="toggleGenerateForm()">
+                <i class="fas fa-plus"></i> Generate New Bill
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-file-invoice"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Total Bills</h3>
+                    <p class="stat-number" id="totalBills">0</p>
+                    <small>All time</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Paid Bills</h3>
+                    <p class="stat-number" id="paidBills">0</p>
+                    <small>₹ <span id="collectedAmount">0</span> collected</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Pending Bills</h3>
+                    <p class="stat-number" id="pendingBills">0</p>
+                    <small data-pending-amount>₹ 0 pending</small>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon red">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>Overdue Bills</h3>
+                    <p class="stat-number" id="overdueBills">0</p>
+                    <small>₹ <span id="overdueAmount">0</span> overdue</small>
+                </div>
+            </div>
+        </div>
+
+        <!--==================== Generate Bill Form ================= -->
+        <div class="generate-bill-form" id="generateBillForm">
+            <h2 class="form-title">Generate New Bill</h2>
+            <form id="billForm" onsubmit="generateBill(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Select Member *</label>
+                        <div class="dual-input">
+                            <select id="memberSelect">
+                                <option value="">Loading members...</option>
+                            </select>
+                            <input type="text" id="memberNameManual" placeholder="Or type member name/flat…" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Bill Type *</label>
+                        <div class="dual-input">
+                            <select id="billType">
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Electricity">Electricity</option>
+                                <option value="Water">Water</option>
+                                <option value="Parking">Parking</option>
+                                <option value="Special Assessment">Special Assessment</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <input type="text" id="billTypeManual" placeholder="Or enter custom type…" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Bill Period *</label>
+                        <input type="text" id="billPeriod" placeholder="e.g., March 2024 or Q1 2024" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date *</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                </div>
+
+                <div class="bill-items">
+                    <h4>Bill Items</h4>
+                    <div class="bill-item-row header">
+                        <span>Description</span>
+                        <span>Quantity</span>
+                        <span>Unit Price</span>
+                        <span>Amount</span>
+                        <span></span>
+                    </div>
+                    <div id="billItems">
+                        <div class="bill-item-row item-row">
+                            <input type="text" class="item-desc" value="Maintenance Charges" placeholder="Description" onchange="calculateItemAmount(this)">
+                            <input type="number" class="item-qty" value="1" min="1" onchange="calculateItemAmount(this)">
+                            <input type="number" class="item-price" value="2500" min="0" onchange="calculateItemAmount(this)">
+                            <input type="number" class="item-amount" value="2500" readonly>
+                            <i class="fas fa-trash remove-item" onclick="removeItem(this)"></i>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addBillItem()">
+                        <i class="fas fa-plus"></i> Add Item
+                    </button>
+                    
+                    <div class="total-amount">
+                        Total Amount: ₹ <span id="totalAmount">2500</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Additional Notes</label>
+                    <textarea id="billNotes" rows="3" placeholder="Any additional information..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-success">Generate Bill</button>
+                    <button type="button" class="btn-secondary" onclick="toggleGenerateForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!--========================== Filter Section ================================= -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label>Status:</label>
+                <select id="statusFilter" onchange="filterBills()" style="color: rgb(7, 172, 178);">
+                    <option value="all">All Bills</option>
+                    <option value="paid">Paid</option>
+                    <option value="pending">Pending</option>
+                    <option value="overdue">Overdue</option>
+                    <option value="partial">Partial</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Bill Type:</label>
+                <select id="typeFilter" onchange="filterBills()" style="color: rgb(7, 172, 178);">
+                    <option value="all">All Types</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Electricity">Electricity</option>
+                    <option value="Water">Water</option>
+                    <option value="Parking">Parking</option>
+                </select>
+            </div>
+
+            <div class="filter-group" >
+                <label>Month:</label>
+                <select id="monthFilter" onchange="filterBills()" style="color: rgb(7, 172, 178);">
+                    <option value="all">All Months</option>
+                    <option value="March 2024">March 2024</option>
+                    <option value="February 2024">February 2024</option>
+                    <option value="January 2024">January 2024</option>
+                </select>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by member name, flat, or bill ID..." onkeyup="searchBills()">
+                <button class="btn-primary" onclick="searchBills()"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+
+        <!--========================= Bills Container ==========================-->
+        <div class="bills-container">
+            <div class="bills-tabs">
+                <button class="tab-btn active" onclick="switchTab('all', this)">All Bills</button>
+                <button class="tab-btn" onclick="switchTab('pending', this)">Pending</button>
+                <button class="tab-btn" onclick="switchTab('paid', this)">Paid</button>
+                <button class="tab-btn" onclick="switchTab('overdue', this)">Overdue</button>
+            </div>
+
+            <!-- Bills Table -->
+            <table class="bills-table">
+                <thead>
+                    <tr>
+                        <th>Bill ID</th>
+                        <th>Member</th>
+                        <th>Flat</th>
+                        <th>Type</th>
+                        <th>Period</th>
+                        <th>Amount</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="billsTableBody">
+                    <!-- ====================Dynamic content will be loaded here ==================-->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Record Payment</h2>
+                <span class="close-btn" onclick="closeModal('paymentModal')">&times;</span>
+            </div>
+            <div class="payment-details" id="paymentDetails">
+                <p><strong>Bill ID:</strong> <span id="paymentBillId">-</span></p>
+                <p><strong>Member:</strong> <span id="paymentMember">-</span></p>
+                <p><strong>Amount Due:</strong> ₹ <span id="paymentAmount">0</span></p>
+            </div>
+            
+            <div class="form-group">
+                <label>Payment Amount</label>
+                <input type="number" id="paymentAmountInput" value="0">
+            </div>
+
+            <div class="form-group">
+                <label>Payment Method</label>
+                <div class="payment-methods">
+                    <div class="payment-method" onclick="selectPaymentMethod(this, 'cash')">
+                        <i class="fas fa-money-bill"></i>
+                        <span>Cash</span>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod(this, 'card')">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Card</span>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod(this, 'upi')">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>UPI</span>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod(this, 'bank')">
+                        <i class="fas fa-university"></i>
+                        <span>Bank Transfer</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Payment Date</label>
+                <input type="date" id="paymentDate">
+            </div>
+
+            <div class="form-group">
+                <label>Transaction ID / Reference</label>
+                <input type="text" id="transactionId" placeholder="Enter transaction ID">
+            </div>
+
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea id="paymentNotes" rows="2" placeholder="Any notes..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-success" onclick="recordPayment()">Record Payment</button>
+                <button class="btn-secondary" onclick="closeModal('paymentModal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!--================== View Bill Modal ===============================-->
+    <div class="modal" id="viewBillModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Bill Details</h2>
+                <span class="close-btn" onclick="closeModal('viewBillModal')">&times;</span>
+            </div>
+            <div id="billDetailsContent">
+                <!-- Bill details will be loaded here -->
+            </div>
+            <div class="form-actions">
+                <button class="btn-secondary" onclick="closeModal('viewBillModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/bills.js"></script>
+</body>
+</html>

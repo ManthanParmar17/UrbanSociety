@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events · UrbanSociety</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/admin/css/admin-nav.css">
+    <link rel="stylesheet" href="/admin/css/dashboard.css">
+    <link rel="stylesheet" href="../css/member_dashboard.css">
+
+    <!-- Inline overrides force the column layout (avoids cached styles) -->
+    <style>
+        :root { --label:#8dd5ff; --text:#e8eefc; --card-bg:rgba(255,255,255,0.06); }
+        body { margin:0; }
+        .main { max-width:1100px; margin:26px auto; padding:0 16px; }
+        .actions { display:flex; gap:10px; margin-bottom:14px; }
+        .btn { border:none; border-radius:10px; padding:9px 14px; font-weight:700; cursor:pointer; }
+        .btn-secondary { background: linear-gradient(120deg, #22c55e, #20a4f3); color:#0b1221; box-shadow:0 8px 20px rgba(14,165,233,0.28); }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; }
+        .card { background: var(--card-bg); border:1px solid rgba(255,255,255,0.10); border-radius:16px; padding:18px; color:var(--text); box-shadow:0 18px 40px rgba(0,0,0,0.32); display:flex; flex-direction:column; gap:12px; }
+        .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:800; text-transform:uppercase; background:rgba(32,164,243,0.16); color:#9cd8ff; width:max-content; }
+        .card h3 { margin:0; color:#f8fafc; }
+        .desc { margin:0; color:#d0daf0; line-height:1.45; min-height:32px; }
+        .detail-list { display:grid; gap:10px; }
+        .detail-row { display:grid; grid-template-columns:110px 1fr; column-gap:12px; align-items:start; }
+        .detail-label { font-size:11px; letter-spacing:0.06em; text-transform:uppercase; font-weight:800; color:var(--label); }
+        .detail-value { color:var(--text); line-height:1.5; word-break:break-word; }
+        .pill { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:800; margin-right:6px; margin-bottom:6px; }
+        .pill.going { background:rgba(34,197,94,0.18); color:#86efac; }
+        .pill.maybe { background:rgba(14,165,233,0.18); color:#7dd3fc; }
+        .pill.declined { background:rgba(239,68,68,0.18); color:#fca5a5; }
+        .empty { text-align:center; padding:40px; color:#9fb3d2; }
+        .main h1 { color:#ecf2fb; }
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <button class="back-btn" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <div class="nav-logo">
+                <img src="/admin/images/image.png" alt="Logo">
+                <span>Urban<span>Society</span></span>
+            </div>
+        </div>
+
+        <div class="nav-center">
+            <ul class="nav-menu">
+                <li><a href="member_dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="member_notices.html"><i class="fas fa-bullhorn"></i> Notices</a></li>
+                <li><a class="active" href="member_events.html"><i class="fas fa-calendar"></i> Events</a></li>
+                <li><a href="member_complaints.html"><i class="fas fa-exclamation-triangle"></i> Complaints</a></li>
+                <li><a href="member_bills.html"><i class="fas fa-file-invoice"></i> Bills</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-right">
+            <div class="dropdown">
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="user-info">
+                        <span id="userName">Member</span>
+                        <span class="user-role">Resident</span>
+                    </div>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-content">
+                    <a href="member_profile.html"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="#" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main">
+        <h1 class="page-title">Upcoming Events</h1>
+        <div class="actions">
+            <button class="btn btn-secondary" id="refreshEvents"><i class="fas fa-rotate-right"></i> Refresh</button>
+        </div>
+        <div id="eventsContainer" class="grid"></div>
+    </div>
+
+    <footer class="page-footer">@LeoVisionaries</footer>
+
+    <script src="../js/common.js"></script>
+    <script src="../js/member_events.js?v=6"></script>
+    <script>
+        // Force the labeled column layout (overrides any cached renderEvents)
+        function renderEvents(events) {
+            const container = document.getElementById('eventsContainer');
+            if (!events || events.length === 0) {
+                container.innerHTML = `<div class="empty"><i class="fas fa-calendar-times"></i> No upcoming events.</div>`;
+                return;
+            }
+
+            container.innerHTML = events.map(ev => {
+                const date = formatDate(ev.date);
+                const timeRange = `${formatTime(ev.start_time)}${ev.end_time ? ' - ' + formatTime(ev.end_time) : ''}`.trim() || '-';
+                const venue = ev.venue || '-';
+                const organizer = ev.organizer || '-';
+                const contact = ev.contact || '-';
+                return `
+                <div class="card">
+                    <div class="badge"><i class="fas fa-tag"></i> ${ev.type || 'Event'}</div>
+                    <h3>${ev.title || 'Untitled event'}</h3>
+                    <p class="desc">${ev.description || 'No description provided.'}</p>
+                    <div class="detail-list">
+                        <div class="detail-row"><span class="detail-label">Date</span><span class="detail-value">${date}</span></div>
+                        <div class="detail-row"><span class="detail-label">Venue</span><span class="detail-value">${venue}</span></div>
+                        <div class="detail-row"><span class="detail-label">Time</span><span class="detail-value">${timeRange}</span></div>
+                        <div class="detail-row"><span class="detail-label">Organizer</span><span class="detail-value">${organizer}</span></div>
+                        <div class="detail-row"><span class="detail-label">Contact</span><span class="detail-value">${contact}</span></div>
+                        <div class="detail-row">
+                            <span class="detail-label">RSVP</span>
+                            <span class="detail-value">
+                                <span class="pill going">Going: ${ev.rsvp_going || 0}</span>
+                                <span class="pill maybe">Maybe: ${ev.rsvp_maybe || 0}</span>
+                                <span class="pill declined">Declined: ${ev.rsvp_declined || 0}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="actions" style="margin-top:6px;">
+                        <button class="btn btn-secondary" onclick="submitRSVP(${ev.id}, 'going')">Going</button>
+                        <button class="btn btn-secondary" onclick="submitRSVP(${ev.id}, 'maybe')">Maybe</button>
+                        <button class="btn btn-secondary" onclick="submitRSVP(${ev.id}, 'declined')">Declined</button>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,605 @@
+/* Minimal bridge stylesheet; main styles live in member_complaints_dashboard.css */
+:root {
+    --primary: #0f172a;
+    --secondary: #22c55e;
+    --accent: #0ea5e9;
+}
+
+body {
+    background: #0b1221;
+    color: #e2e8f0;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Modal readability */
+.modal {
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: #f8fbff;
+    color: #0b1221;
+    border: 1px solid #0b1221;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+}
+
+.modal-content h3,
+.modal-content label,
+.modal-content span {
+    color: #0b1221;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    background: #ffffff;
+    color: #0b1221;
+    border: 1px solid #0b1221;
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.modal-content ::placeholder {
+    color: #5c6b7a;
+    opacity: 0.9;
+}
+
+.modal-content .btn-primary {
+    border: 1px solid #000;
+    color: #fff;
+}
+
+.modal-content .btn-primary:hover {
+    color: #fff;
+}
+
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ================= VARIABLES ================= */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
+
+:root {
+    --primary: #0a0f1a;
+    --secondary: #3dd6a6;
+    --accent: #20a4f3;
+    --success: #34d399;
+    --warning: #fbbf24;
+    --danger: #ef4444;
+    --light: #0d1728;
+    --dark: #050a12;
+    --text: #eaf0ff;
+    --muted: #b9c8e3;
+    --border: rgba(255, 255, 255, 0.12);
+    --shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
+}
+
+body {
+    background: radial-gradient(circle at 12% 18%, rgba(34, 197, 94, 0.08), transparent 24%),
+        radial-gradient(circle at 84% -6%, rgba(14, 165, 233, 0.08), transparent 25%),
+        #050a12;
+    color: var(--text);
+    font-family: 'Manrope', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ================= NAVBAR ================= */
+.top-nav {
+    background: linear-gradient(90deg, #0c1628 0%, #0b3c63 45%, #0d1728 100%);
+    color: var(--text);
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Left */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.16);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(-3px);
+}
+
+/* Logo */
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    padding: 5px;
+}
+
+.nav-logo span {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.nav-logo span span {
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+/* Center Menu */
+.nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+/* Right Profile */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+}
+
+/* Dropdown */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background: white;
+    color: black;
+    min-width: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-content a:hover {
+    background: #f0f0f0;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* ================= MAIN ================= */
+.main-content {
+    padding: 46px 36px 16px;
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    background: linear-gradient(120deg, var(--secondary), var(--accent));
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 800;
+    box-shadow: 0 10px 26px rgba(14, 165, 233, 0.3);
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text);
+}
+
+/* ================= ACTION BAR ================= */
+.action-bar {
+    margin-bottom: 20px;
+}
+
+/* ================= CARDS ================= */
+.complaints-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.page-footer {
+    margin-top: 40px;
+    padding: 20px 0 32px;
+    text-align: center;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.complaint-card {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.05));
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: 0.3s;
+    color: var(--text);
+}
+
+.complaint-card:hover {
+    transform: translateY(-4px);
+}
+
+.complaint-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin-bottom: 10px;
+}
+
+.complaint-meta {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.complaint-desc {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+/* ================= STATUS ================= */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.status-badge.pending {
+    background: rgba(14, 165, 233, 0.15);
+    color: #38bdf8;
+}
+
+.status-badge.in-progress {
+    background: rgba(234, 179, 8, 0.15);
+    color: #fbbf24;
+}
+
+.status-badge.resolved {
+    background: rgba(34, 197, 94, 0.18);
+    color: #34d399;
+}
+
+/* ================= MODAL ================= */
+.modal {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+}
+
+.modal-content {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    width: 400px;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.close-btn {
+    cursor: pointer;
+}
+
+/* ================= FORM ================= */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 5px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #0d1a2f;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .nav-center {
+        display: none;
+    }
+
+    .complaints-container {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+}
+
+/* ===== Modern member theme override ===== */
+:root {
+    --primary: #0b1221;
+    --secondary: #22c55e;
+    --accent: #0ea5e9;
+    --surface: #0b1221;
+    --text: #ffffff;
+    --muted: #e0e7ff;
+    --border: rgba(255, 255, 255, 0.10);
+    --shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+}
+
+body {
+    background: radial-gradient(circle at 12% 18%, rgba(34, 197, 94, 0.08), transparent 24%),
+        radial-gradient(circle at 84% -6%, rgba(14, 165, 233, 0.08), transparent 25%),
+        #050a12;
+    color: var(--text);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.top-nav {
+    background: linear-gradient(90deg, #0c1628 0%, #0f172a 60%, #0b1221 100%);
+    box-shadow: var(--shadow);
+}
+
+.complaint-card,
+.modal-content {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--border);
+    color: var(--text);
+    box-shadow: var(--shadow);
+}
+
+.complaint-header h3,
+.page-title {
+    color: #f8fafc;
+}
+
+.complaint-desc,
+.complaint-meta span,
+.complaint-details span,
+.complaint-footer span {
+    color: var(--muted);
+}
+
+.priority-badge.low {
+    background: rgba(34, 197, 94, 0.15);
+    color: #34d399;
+}
+
+.priority-badge.medium {
+    background: rgba(234, 179, 8, 0.15);
+    color: #facc15;
+}
+
+.priority-badge.high {
+    background: rgba(239, 68, 68, 0.18);
+    color: #fb7185;
+}
+
+.status-badge.pending {
+    background: rgba(14, 165, 233, 0.15);
+    color: #38bdf8;
+}
+
+.status-badge.in-progress {
+    background: rgba(234, 179, 8, 0.15);
+    color: #fbbf24;
+}
+
+.status-badge.resolved {
+    background: rgba(34, 197, 94, 0.18);
+    color: #34d399;
+}
+
+.dropdown-content {
+    background: #0d1728;
+    color: #fff;
+    border: 1px solid var(--border);
+}
+
+.dropdown-content a {
+    color: #fff;
+    font-weight: 700;
+}
+
+.btn-primary,
+.complaint-actions .btn-action {
+    background: linear-gradient(120deg, var(--secondary), var(--accent));
+    color: #fff;
+    border: 1px solid #000;
+    font-weight: 800;
+    box-shadow: 0 10px 26px rgba(14, 165, 233, 0.3);
+    border-radius: 10px;
+    padding: 12px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 15px;
+}
+
+.btn-primary:hover,
+.complaint-actions .btn-action:hover {
+    transform: translateY(-1px);
+    color: #fff;
+}
+
+.btn-action.danger {
+    background: linear-gradient(120deg, #ef4444, #f97316);
+    color: #fff;
+}
+
+/* Spacing & readability tweaks */
+.action-bar {
+    margin-bottom: 24px;
+}
+
+.complaints-container {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px 34px;
+    margin-top: 12px;
+}
+
+.complaint-card {
+    padding: 26px;
+}
+
+/* ===== High-contrast typography pass ===== */
+h1, h2, h3, h4, h5, h6,
+label,
+.nav-menu a,
+.user-info span,
+.page-title,
+.content-header h1,
+.complaint-title,
+.complaint-desc,
+.complaint-meta,
+.complaint-footer span {
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.modal-content h3,
+.modal-content label,
+.modal-content span {
+    color: #fff;
+    font-weight: 800;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    background: #0d1a2f;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.modal-content select option {
+    color: #fff;
+    background: #0d1a2f;
+}
+
+.modal-content ::placeholder {
+    color: #e3e8ff;
+    opacity: 1;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+    .nav-center {
+        display: none;
+    }
+    .main-content {
+        padding: 24px 16px;
+    }
+    .complaints-container {
+        grid-template-columns: 1fr;
+    }
+    .modal-content {
+        width: 92%;
+        margin: 10% auto;
+    }
+}
