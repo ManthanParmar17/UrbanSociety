@@ -1,11 +1,13 @@
 import mysql.connector
+import os
 
 # ======================== COMMENT ========================
 # Provide a new MySQL connection for backend routes (update creds as needed).
 def get_db():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="117717",   # apna password dalna agar hai
-        database="urban_society"
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME"),
+        port=int(os.getenv("DB_PORT"))
     )
