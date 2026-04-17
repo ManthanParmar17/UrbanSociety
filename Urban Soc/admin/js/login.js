@@ -91,7 +91,7 @@
         }
 
         // ================= API CALL =================
-        fetch("http://127.0.0.1:5000/login", {
+        fetch("https://urban-society-9i6a.onrender.com/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
