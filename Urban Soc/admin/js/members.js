@@ -45,7 +45,7 @@ function setupMemberForm() {
         submitBtn.disabled = true;
 
         const payload = { name, email, flatId: flat };
-        const url = editingMemberId Rs  "/update_member" : "/add_member";
+        const url = editingMemberId ? "/update_member" : "/add_member";
         if (editingMemberId) payload.id = editingMemberId;
 
         fetch(url, {
@@ -56,7 +56,7 @@ function setupMemberForm() {
             .then(res => res.json())
             .then(data => {
                 if (data.message) {
-                    showToast(editingMemberId Rs  'Member updated successfully!' : 'Member added successfully!', 'success');
+                    showToast(editingMemberId ? 'Member updated successfully!' : 'Member added successfully!', 'success');
                     document.getElementById("memberForm").reset();
                     editingMemberId = null;
                     submitBtn.textContent = 'Add Member';
@@ -83,7 +83,7 @@ function loadMembers() {
         .then(res => res.json())
         .then(data => {
             const table = document.getElementById("membersTable");
-            membersCache = Array.isArray(data) Rs  data : [];
+            membersCache = Array.isArray(data) ? data : [];
 
             try { localStorage.setItem('members_cache', JSON.stringify(data || [])); } catch (_) {}
 
@@ -120,7 +120,7 @@ function loadMembers() {
             console.error(err);
             showToast('Error loading members', 'error');
             const cached = localStorage.getItem('members_cache');
-            const fallback = cached Rs  JSON.parse(cached) : [];
+            const fallback = cached ? JSON.parse(cached) : [];
             const table = document.getElementById("membersTable");
             if (!fallback.length) {
                 table.innerHTML = `
@@ -257,7 +257,7 @@ function displayNotifications(notifications) {
     notificationCount.textContent = notifications.length;
 
     notificationsList.innerHTML = notifications.map((notif, index) => `
-                <div class="notification-item ${index === 0 Rs  'unread' : ''}">
+                <div class="notification-item ${index === 0 ? 'unread' : ''}">
                     <i class="notification-icon ${notif.type} ${notif.icon}"></i>
                     <div class="notification-content">
                         <div class="notification-title">${notif.title}</div>
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) Rs  '' : 'none';
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
         });
     }
