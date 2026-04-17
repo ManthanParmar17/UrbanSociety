@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadEvents() {
     const container = document.getElementById('eventsContainer');
-    fetch("http://127.0.0.1:5000/get_events")
+    fetch("/get_events")
         .then(res => res.json())
         .then(events => {
             if (!Array.isArray(events)) {
@@ -91,7 +91,7 @@ function formatTime(t) {
 }
 
 function submitRSVP(eventId, status) {
-    fetch('http://127.0.0.1:5000/rsvp_event', {
+    fetch('/rsvp_event', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ event_id: eventId, status })

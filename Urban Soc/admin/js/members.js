@@ -1,4 +1,4 @@
-// ======================== COMMENT ========================\n// members.js — logic for admin members page (included via its HTML)\n// ==================== AUTHENTICATION & INITIALIZATION ====================
+// ======================== COMMENT ========================\n// members.js â€” logic for admin members page (included via its HTML)\n// ==================== AUTHENTICATION & INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function () {
     // Check authentication
     const userRole = sessionStorage.getItem('userRole');
@@ -45,7 +45,7 @@ function setupMemberForm() {
         submitBtn.disabled = true;
 
         const payload = { name, email, flatId: flat };
-        const url = editingMemberId ? "http://127.0.0.1:5000/update_member" : "http://127.0.0.1:5000/add_member";
+        const url = editingMemberId Rs  "/update_member" : "/add_member";
         if (editingMemberId) payload.id = editingMemberId;
 
         fetch(url, {
@@ -56,7 +56,7 @@ function setupMemberForm() {
             .then(res => res.json())
             .then(data => {
                 if (data.message) {
-                    showToast(editingMemberId ? 'Member updated successfully!' : 'Member added successfully!', 'success');
+                    showToast(editingMemberId Rs  'Member updated successfully!' : 'Member added successfully!', 'success');
                     document.getElementById("memberForm").reset();
                     editingMemberId = null;
                     submitBtn.textContent = 'Add Member';
@@ -79,11 +79,11 @@ function setupMemberForm() {
 
 // ==================== LOAD MEMBERS ====================
 function loadMembers() {
-    fetch("http://127.0.0.1:5000/get_members")
+    fetch("/get_members")
         .then(res => res.json())
         .then(data => {
             const table = document.getElementById("membersTable");
-            membersCache = Array.isArray(data) ? data : [];
+            membersCache = Array.isArray(data) Rs  data : [];
 
             try { localStorage.setItem('members_cache', JSON.stringify(data || [])); } catch (_) {}
 
@@ -120,7 +120,7 @@ function loadMembers() {
             console.error(err);
             showToast('Error loading members', 'error');
             const cached = localStorage.getItem('members_cache');
-            const fallback = cached ? JSON.parse(cached) : [];
+            const fallback = cached Rs  JSON.parse(cached) : [];
             const table = document.getElementById("membersTable");
             if (!fallback.length) {
                 table.innerHTML = `
@@ -172,11 +172,11 @@ function editMember(memberId) {
 
 // ==================== DELETE MEMBER ====================
 function deleteMember(memberId) {
-    if (!confirm('Are you sure you want to delete this member?')) {
+    if (!confirm('Are you sure you want to delete this memberRs ')) {
         return;
     }
 
-    fetch(`http://127.0.0.1:5000/delete_member/${memberId}`, { method: "DELETE" })
+    fetch(`/delete_member/${memberId}`, { method: "DELETE" })
         .then(res => res.json())
         .then(data => {
             if (data.message) {
@@ -207,7 +207,7 @@ function loadNotifications() {
     const notifications = [];
 
     // Fetch real members count from database
-    fetch("http://127.0.0.1:5000/get_members")
+    fetch("/get_members")
         .then(res => res.json())
         .then(members => {
             if (members.length > 0) {
@@ -220,7 +220,7 @@ function loadNotifications() {
             }
 
             // Fetch real bills data from database
-            return fetch("http://127.0.0.1:5000/get_bills");
+            return fetch("/get_bills");
         })
         .then(res => res.json())
         .then(bills => {
@@ -229,7 +229,7 @@ function loadNotifications() {
                 const totalAmount = pendingBills.reduce((sum, bill) => sum + parseFloat(bill.amount || 0), 0);
                 notifications.push({
                     type: 'bill',
-                    title: `${pendingBills.length} Pending Bills (₹${totalAmount.toFixed(2)})`,
+                    title: `${pendingBills.length} Pending Bills (â‚¹${totalAmount.toFixed(2)})`,
                     time: 'Action needed',
                     icon: 'fas fa-file-invoice'
                 });
@@ -257,7 +257,7 @@ function displayNotifications(notifications) {
     notificationCount.textContent = notifications.length;
 
     notificationsList.innerHTML = notifications.map((notif, index) => `
-                <div class="notification-item ${index === 0 ? 'unread' : ''}">
+                <div class="notification-item ${index === 0 Rs  'unread' : ''}">
                     <i class="notification-icon ${notif.type} ${notif.icon}"></i>
                     <div class="notification-content">
                         <div class="notification-title">${notif.title}</div>
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
+                row.style.display = text.includes(searchTerm) Rs  '' : 'none';
             });
         });
     }

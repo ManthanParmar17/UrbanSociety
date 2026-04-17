@@ -20,7 +20,7 @@ function loadNotices() {
     const container = document.getElementById('noticesContainer');
     const memberIdNorm = normalizeRecipient(sessionStorage.getItem('memberId'));
     const flatIdNorm = normalizeRecipient(sessionStorage.getItem('flatId'));
-    fetch("http://127.0.0.1:5000/get_notices")
+    fetch("/get_notices")
         .then(res => res.json())
         .then(notices => renderNotices(notices, memberIdNorm, flatIdNorm))
         .catch(err => {
@@ -86,4 +86,4 @@ function logout() {
     window.location.href = '/';
 }
 // ======================== COMMENT ========================
-// member_notices.js — member notices feed with local hide capability
+// member_notices.js â€” member notices feed with local hide capability

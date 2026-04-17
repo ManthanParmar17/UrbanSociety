@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ==================== LOAD MEMBER COMPLAINTS ====================
 function loadMemberComplaints(memberId) {
-    const url = `http://127.0.0.1:5000/get_member_complaints?member_id=${encodeURIComponent(memberId)}`;
+    const url = `/get_member_complaints?member_id=${encodeURIComponent(memberId)}`;
     fetch(url)
         .then(res => res.json())
         .then(complaints => {
@@ -65,7 +65,7 @@ function loadMemberComplaints(memberId) {
 
 // ==================== LOAD ALL COMPLAINTS (READ-ONLY) ====================
 function loadAllComplaints() {
-    fetch("http://127.0.0.1:5000/get_complaints")
+    fetch("/get_complaints")
         .then(res => res.json())
         .then(complaints => displayAllComplaints(complaints))
         .catch(err => {
@@ -153,7 +153,7 @@ function setupComplaintForm(memberId) {
 
         console.log("Submitting complaint", complaintData);
 
-        fetch("http://127.0.0.1:5000/add_complaint", {
+        fetch("/add_complaint", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(complaintData)
@@ -236,7 +236,7 @@ function deleteComplaint(complaintId) {
 
     if (!confirm('Delete this complaint? This cannot be undone.')) return;
 
-    fetch(`http://127.0.0.1:5000/delete_complaint/${complaintId}?member_id=${encodeURIComponent(memberId)}`, {
+    fetch(`/delete_complaint/${complaintId}?member_id=${encodeURIComponent(memberId)}`, {
         method: "DELETE"
     })
     .then(res => res.json())
@@ -255,7 +255,7 @@ function deleteComplaint(complaintId) {
 // ==================== VIEW COMPLAINT ====================
 function viewComplaint(complaintId) {
     const memberId = sessionStorage.getItem('memberId');
-    const url = `http://127.0.0.1:5000/get_member_complaints?member_id=${encodeURIComponent(memberId)}`;
+    const url = `/get_member_complaints?member_id=${encodeURIComponent(memberId)}`;
     fetch(url)
         .then(res => res.json())
         .then(complaints => {
@@ -394,4 +394,4 @@ function logout() {
     window.location.href = '/';
 }
 // ======================== COMMENT ========================
-// member_complaints.js — logic for member complaint creation, listing, and status display
+// member_complaints.js â€” logic for member complaint creation, listing, and status display

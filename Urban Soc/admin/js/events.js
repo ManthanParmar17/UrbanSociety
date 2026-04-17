@@ -1,4 +1,4 @@
-// events.js — logic for admin events page (included via its HTML)\n// ==================== EVENTS DATA ====================
+// events.js â€” logic for admin events page (included via its HTML)\n// ==================== EVENTS DATA ====================
 let events = [];
 
 // backend-backed save placeholder (reloads instead of localStorage)
@@ -8,7 +8,7 @@ function saveEvents() {
 
 // Load events from backend
 function loadEventsData() {
-    fetch("http://127.0.0.1:5000/get_events")
+    fetch("/get_events")
         .then(res => res.json())
         .then(data => {
             events = (data || []).map(ev => ({
@@ -366,7 +366,7 @@ function saveEvent(event) {
         venue, capacity, description, organizer, contact
     };
 
-    const url = editingEventId ? "http://127.0.0.1:5000/update_event" : "http://127.0.0.1:5000/add_event";
+    const url = editingEventId ? "/update_event" : "/add_event";
     if (editingEventId) payload.id = editingEventId;
 
     fetch(url, {
@@ -441,9 +441,9 @@ function viewEvent(id) {
                     <div style="margin-top: 20px;">
                         <h4 style="color: var(--primary);">RSVP Summary</h4>
                         <div style="display: flex; gap: 20px; margin-top: 10px;">
-                            <div><span style="color: var(--success);">✓ Going:</span> ${event.rsvp.going}</div>
+                            <div><span style="color: var(--success);">âœ“ Going:</span> ${event.rsvp.going}</div>
                             <div><span style="color: var(--warning);">? Maybe:</span> ${event.rsvp.maybe}</div>
-                            <div><span style="color: var(--danger);">✗ Declined:</span> ${event.rsvp.declined}</div>
+                            <div><span style="color: var(--danger);">âœ— Declined:</span> ${event.rsvp.declined}</div>
                         </div>
                     </div>
                     
@@ -481,7 +481,7 @@ function editEvent(id) {
 // ==================== DELETE EVENT ====================
 function deleteEvent(id) {
     if (confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
-        fetch("http://127.0.0.1:5000/delete_event", {
+        fetch("/delete_event", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id })
@@ -588,7 +588,7 @@ function submitRSVP(status) {
         return;
     }
 
-    fetch("http://127.0.0.1:5000/rsvp_event", {
+    fetch("/rsvp_event", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ event_id: eventId, status })
@@ -712,6 +712,6 @@ function goBack() {
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
         sessionStorage.clear();
-        window.location.href = 'http://127.0.0.1:5000/';
+        window.location.href = '/';
     }
 }

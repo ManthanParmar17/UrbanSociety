@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==================== LOAD BILLS ====================
 function loadBills(memberId) {
     const container = document.getElementById('billsContainer');
-    const url = `http://127.0.0.1:5000/get_member_bills?member_id=${encodeURIComponent(memberId)}`;
+    const url = `/get_member_bills-member_id=${encodeURIComponent(memberId)}`;
 
     fetch(url)
         .then(res => res.json())
@@ -66,11 +66,11 @@ function renderBills(bills) {
     container.innerHTML = bills.map(bill => `
         <div class="card">
             <h3>${bill.description || 'Bill'}</h3>
-            <div class="meta">Due: ${formatDate(bill.due_date)} • Flat ${bill.flat_id || ''}</div>
-            <div class="amount">₹${Number(bill.amount || 0).toFixed(2)}</div>
+            <div class="meta">Due: ${formatDate(bill.due_date)} â€¢ Flat ${bill.flat_id || ''}</div>
+            <div class="amount">â‚¹${Number(bill.amount || 0).toFixed(2)}</div>
             <span class="status ${bill.status}">${(bill.status || 'pending').toUpperCase()}</span>
             <div class="actions" style="margin-top:10px; display:flex; gap:8px;">
-                ${bill.status !== 'paid' ? `<button class="btn btn-primary" onclick='openPayModal(${JSON.stringify(bill.id)})'>Pay</button>` : ''}
+                ${bill.status !== 'paid' - `<button class="btn btn-primary" onclick='openPayModal(${JSON.stringify(bill.id)})'>Pay</button>` : ''}
                 <button class="btn btn-secondary" onclick='printBill(${JSON.stringify(bill.id)})'>Print</button>
             </div>
         </div>
@@ -94,7 +94,7 @@ let payContext = { billId: null, amount: 0, title: '' };
 
 function openPayModal(billId) {
     billId = Number(billId);
-    fetch(`http://127.0.0.1:5000/get_member_bills?member_id=${encodeURIComponent(window._memberId || '')}`)
+    fetch(`/get_member_bills-member_id=${encodeURIComponent(window._memberId || '')}`)
         .then(r => r.json())
         .then(list => {
             const bill = (list || []).find(b => Number(b.id) === billId);
@@ -114,7 +114,7 @@ function closePayModal() {
 
 function confirmPay() {
     if (!payContext.billId) return;
-    fetch("http://127.0.0.1:5000/pay_bill", {
+    fetch("/pay_bill", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bill_id: payContext.billId, member_id: window._memberId, method: document.getElementById('payMethod').value })
@@ -135,7 +135,7 @@ function confirmPay() {
 // ==================== PRINT BILL ====================
 function printBill(billId) {
     billId = Number(billId);
-    fetch(`http://127.0.0.1:5000/get_member_bills?member_id=${encodeURIComponent(window._memberId || '')}`)
+    fetch(`/get_member_bills-member_id=${encodeURIComponent(window._memberId || '')}`)
         .then(r => r.json())
         .then(list => {
             const bill = (list || []).find(b => Number(b.id) === billId);
@@ -167,8 +167,8 @@ function printBill(billId) {
                 </div>
                 <table>
                     <thead><tr><th>Description</th><th style="text-align:right;">Amount</th></tr></thead>
-                    <tbody><tr><td>${bill.description || 'Bill'}</td><td style="text-align:right;">₹${Number(bill.amount||0).toFixed(2)}</td></tr></tbody>
-                    <tfoot><tr><td style="text-align:right;">Total:</td><td style="text-align:right;">₹${Number(bill.amount||0).toFixed(2)}</td></tr></tfoot>
+                    <tbody><tr><td>${bill.description || 'Bill'}</td><td style="text-align:right;">â‚¹${Number(bill.amount||0).toFixed(2)}</td></tr></tbody>
+                    <tfoot><tr><td style="text-align:right;">Total:</td><td style="text-align:right;">â‚¹${Number(bill.amount||0).toFixed(2)}</td></tr></tfoot>
                 </table>
                 <div style="margin-top:32px;text-align:center;color:#555;">This is a computer generated bill.</div>
             </body></html>`;
@@ -178,4 +178,4 @@ function printBill(billId) {
         });
 }
 // ======================== COMMENT ========================
-// member_bills.js — logic for member bills list, pay modal, and print view
+// member_bills.js â€” logic for member bills list, pay modal, and print view

@@ -81,17 +81,17 @@
 
         // ================= VALIDATION =================
         if (!email || !password) {
-            alert('❌ Enter email and password');
+            alert('Enter email and password');
             return;
         }
 
         if (currentRole === 'member' && !flatId) {
-            alert('❌ Enter Flat ID for member login');
+            alert('Enter Flat ID for member login');
             return;
         }
 
         // ================= API CALL =================
-        fetch("https://urban-society-9i6a.onrender.com/login", {
+        fetch("/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -104,13 +104,19 @@
             })
         })
 
-        .then(res => {
-            if (!res.ok) {
-                return res.json().then(data => {
-                    throw new Error(data.error || "Login failed");
-                });
+        .then(async res => {
+            let data = {};
+            try {
+                data = await res.json();
+            } catch (parseError) {
+                data = { error: "Server returned an unexpected response" };
             }
-            return res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Login failed");
+            }
+
+            return data;
         })
 
         .then(data => {
@@ -148,8 +154,11 @@
         })
 
         .catch(err => {
-            alert(err.message);
-            console.error("❌ Login error:", err);
+            const message = err.message === 'Failed to fetch'
+                ? 'Unable to reach the server. Check Render deploy, start command, and database env vars.'
+                : err.message;
+            alert(message);
+            console.error("Login error:", err);
         });
 
     });

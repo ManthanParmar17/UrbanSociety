@@ -1,11 +1,11 @@
-// ======================== COMMENT ========================\n// notice.js — logic for admin notice page (included via its HTML)\nlet noticesData = [];
+// ======================== COMMENT ========================\n// notice.js â€” logic for admin notice page (included via its HTML)\nlet noticesData = [];
 let noticeTypeFilter = 'all';
 let noticeDateFilter = 'all';
 let editingNoticeId = null;
 
 // ==================== LOAD NOTICES FROM BACKEND ====================
 function loadNoticesData() {
-    fetch("http://127.0.0.1:5000/get_notices")
+    fetch("/get_notices")
         .then(res => res.json())
         .then(data => {
             noticesData = Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : []);
@@ -80,12 +80,12 @@ document.getElementById("noticeForm").addEventListener("submit", function(e) {
 // ==================== DELETE NOTICE ====================
 
 function deleteNotice(id) {
-    return fetch(`http://127.0.0.1:5000/delete_notice/${id}`, {
+    return fetch(`/delete_notice/${id}`, {
         method: "DELETE"
     })
     .then(res => res.json())
     .then(data => {
-        alert("Deleted ✅");
+        alert("Deleted âœ…");
         loadNoticesData();
         return data;
     });
@@ -140,7 +140,7 @@ function submitNotice(status) {
 
     const payload = { title, description, type, status };
 
-    const addNotice = () => fetch("http://127.0.0.1:5000/add_notice", {
+    const addNotice = () => fetch("/add_notice", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

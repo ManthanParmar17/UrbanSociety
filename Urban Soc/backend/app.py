@@ -1169,6 +1169,11 @@ def favicon():
         return send_file(LOGO_FILE)
     return '', 404
 
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok"}), 200
+
 # ================= RUN =================
 if __name__ == '__main__':
     ensure_tables()
